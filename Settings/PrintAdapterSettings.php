@@ -42,13 +42,31 @@ class PrintAdapterSettings extends SettingsPage
                             'description'   =>  __( 'Provide the local Nexo Print Server 3.x address' ),
                             'name'          =>  'ns_pa_server_address',
                         ], [
+                            'type'          =>  'text',
+                            'label'         =>  __( 'Character Limit' ),
+                            'value'         =>  $options->get( 'ns_pa_characters_limit' ),
+                            'description'   =>  __( 'Define the maximum allowed characters. Default (48)' ),
+                            'name'          =>  'ns_pa_characters_limit',
+                        ], [
                             'type'          =>  'select',
                             'label'         =>  __( 'Default Printer' ),
                             'value'         =>  $options->get( 'ns_pa_printer' ),
                             'description'   =>  __( 'Printer ' ),
                             'options'       =>  [],
                             'name'          =>  'ns_pa_printer',
-                        ]
+                        ], [
+                            'type'          =>  'textarea',
+                            'label'         =>  __( 'Left Column' ),
+                            'value'         =>  $options->get( 'ns_pa_left_column' ),
+                            'description'   =>  __( 'Define the header for the left column' ),
+                            'name'          =>  'ns_pa_left_column',
+                        ], [
+                            'type'          =>  'textarea',
+                            'label'         =>  __( 'Right Column' ),
+                            'value'         =>  $options->get( 'ns_pa_right_column' ),
+                            'description'   =>  __( 'Define the header for the right column' ),
+                            'name'          =>  'ns_pa_right_column',
+                        ],
                     ]
                 ]
             ]

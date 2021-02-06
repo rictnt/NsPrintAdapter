@@ -4,6 +4,7 @@ namespace Modules\NsPrintAdapter\Providers;
 use App\Classes\Hook;
 use Modules\NsPrintAdapter\Settings\PrintAdapterSettings;
 use Modules\NsPrintAdapter\Events\NsPrintAdapterEvent;
+use Modules\NsPrintAdapter\Services\PrintService;
 use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -27,7 +28,9 @@ class ModuleServiceProvider extends ServiceProvider
             return $class;
         }, 10, 2 );
 
-        Hook::addAction( 'ns-dashboard-footer', [ NsPrintAdapterEvent::class, 'getFooter' ] );
+        Hook::addAction( 'ns-dashboard-pos-footer', [ NsPrintAdapterEvent::class, 'getFooter' ] );
+
+        $this->app->singleton( PrintService::class, fn() => new PrintService );
     }
 
     public function boot()

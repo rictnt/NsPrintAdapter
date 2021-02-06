@@ -14,7 +14,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
                                 field.options   =   result.map( printer => {
                                     return {
                                         label: printer.name,
-                                        value: printer.driverName
+                                        value: printer.name
                                     }
                                 })
                             }
