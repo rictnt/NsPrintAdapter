@@ -5,10 +5,28 @@ const nsPrintAdapterOptions     =   {
     'server_address'    :   '{{ ns()->option->get( "ns_pa_server_address" ) }}'
 };
 
-document.addEventListener( 'DOMContentLoaded', () => {
-    nsHooks.addAction( 'ns-order-submit-successful', 'ns-pa.catch-order', ( result ) => {
-        console.log( result );
-        nsHttpClient.get( `/api/nexopos/v4/ns-print-adapter/receipt/${result.data.order.id}` )
+class nsPaPrint {
+    constructor() {
+        nsHooks.addAction( 'ns-order-submit-successful', 'ns-pa.catch-order', ( result ) => {
+            this.print( result.data.order.id );
+        });
+
+        nsHooks.addAction( 'ns-pos-pending-orders-refreshed', 'ns-pa.order-refreshed', ( orders ) => {
+            setTimeout(() => {
+                $( '.buttons-container' ).prepend( 
+                    `<button class="print-button text-white bg-indigo-400 outline-none px-2 py-1"><i class="las la-print"></i> {{ __( 'Print' ) }}</button>`
+                );
+
+                $( '.print-button' ).bind( 'click', function() {
+                    const orderID   =   $(this).closest( '[data-order-id]' ).data( 'order-id' );
+                    nsPaPrintObject.print( orderID );
+                });
+            }, 100 );
+        })
+    }
+    
+    print( order_id ) {
+        nsHttpClient.get( `/api/nexopos/v4/ns-print-adapter/receipt/${order_id}` )
             .subscribe( result => {
                 const { printer, content, address }  =   result;
 
@@ -20,7 +38,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
                         console.log( result );
                     }
                 });
-            })        
-    })
+            })  
+    }
+}
+
+let nsPaPrintObject;
+document.addEventListener( 'DOMContentLoaded', () => {
+    nsPaPrintObject     =   new nsPaPrint;
 })
 </script>

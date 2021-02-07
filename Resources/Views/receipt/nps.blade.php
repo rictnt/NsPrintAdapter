@@ -3,15 +3,19 @@
     <align mode="center">
         <bold>
             <text-line size="3:3">
-            {{ __( 'Logo' ) }}
+            @if ( ns()->option->get( 'ns_pa_logotype' ) === 'image' )
+                {{ ns()->option->get( 'ns_pa_logoshortcode' ) }}
+            @else
+                {{ ns()->option->get( 'ns_store_rectangle_logo', ns()->option->get( 'ns_store_name' ) ) }}
+            @endif
             </text-line>
         </bold>
     </align>
     <line-feed></line-feed>
     <align mode="left">
         <?php foreach( $printService->buildingLines( 
-            ns()->option->get( 'ns_pa_left_column' ),
-            ns()->option->get( 'ns_pa_right_column' ),
+            ns()->option->get( 'ns_pa_left_column', '' ),
+            ns()->option->get( 'ns_pa_right_column', '' ),
         ) as $line ):?>
         <text-line><?php echo $printService->nexting( $line );?></text-line>
         <?php endforeach;?>
@@ -55,11 +59,13 @@
 
         @foreach( $order->payments as $payment )
         <text-line><?php echo $printService->nexting([
-            $payment->identifier,
+            $payments[ $payment->identifier ],
             ns()->currency->define( $payment->amount )
         ]);?></text-line>
         @endforeach        
+        
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
+
         <text-line><?php echo $printService->nexting([
             __( 'Tendered' ),
             ns()->currency->define( $order->tendered )
@@ -81,5 +87,8 @@
         <text-line>{{ $order->note }}</text-line>
     </align>
     <line-feed></line-feed>
+    <align mode="center">
+        <text-line>{{ ns()->option->get( 'ns_pa_receipt_footer' ) }}</text-line>
+    </align>
     <paper-cut></paper-cut>
 </document>

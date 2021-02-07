@@ -35,6 +35,22 @@ class PrintAdapterSettings extends SettingsPage
                                 'no'        =>  __( 'No' ),
                             ]),
                             'name'          =>  'ns_pa_enabled',
+                        ],  [
+                            'type'          =>  'select',
+                            'label'         =>  __( 'Logo Type' ),
+                            'value'         =>  $options->get( 'ns_pa_logotype' ),
+                            'description'   =>  __( 'Define what is the logo type.' ),
+                            'options'       =>  Helper::kvToJsOptions([
+                                'image'     =>  __( 'Image (using shortcode)' ),
+                                'text'      =>  __( 'Use Store Name' ),
+                            ]),
+                            'name'          =>  'ns_pa_logotype',
+                        ], [
+                            'type'          =>  'text',
+                            'label'         =>  __( 'Logo Shortcode' ),
+                            'value'         =>  $options->get( 'ns_pa_logoshortcode' ),
+                            'description'   =>  __( 'If the Logo type is a shortcode, provide the shortcode here.' ),
+                            'name'          =>  'ns_pa_logoshortcode',
                         ], [
                             'type'          =>  'text',
                             'label'         =>  __( 'NPS Address' ),
@@ -66,6 +82,12 @@ class PrintAdapterSettings extends SettingsPage
                             'value'         =>  $options->get( 'ns_pa_right_column' ),
                             'description'   =>  __( 'Define the header for the right column' ),
                             'name'          =>  'ns_pa_right_column',
+                        ], [
+                            'type'          =>  'textarea',
+                            'label'         =>  __( 'Receipt Footer' ),
+                            'value'         =>  $options->get( 'ns_pa_receipt_footer' ),
+                            'description'   =>  __( 'This will always displays at the bottom of the receipt.' ),
+                            'name'          =>  'ns_pa_receipt_footer',
                         ],
                     ]
                 ]

@@ -14,7 +14,10 @@ class PrintService
         return [
             'content'       =>  ( string ) View::make( 'NsPrintAdapter::receipt.nps', [
                 'order'         =>  $order,
-                'printService'  =>  $this
+                'printService'  =>  $this,
+                'payments'      =>  collect( config( 'nexopos.pos.payments' ) )
+                    ->mapWithKeys( fn( $payment ) => [ $payment[ 'identifier' ] => $payment[ 'label' ] ])
+                    ->toArray(),
             ]),
             'printer'       =>  ns()->option->get( 'ns_pa_printer' ),
             'address'       =>  ns()->option->get( 'ns_pa_server_address' ),
