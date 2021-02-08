@@ -35,7 +35,8 @@ class nsPaPrint {
                     type        :   'POST',
                     dataType 	:   'json',
                     success     :   ( result ) => {
-                        console.log( result );
+                        nsSnackBar.success( 'The print job has been submitted.' )
+                            .subscribe();
                     }
                 });
             })  

@@ -1,3 +1,7 @@
+<?php
+use App\Models\Order;
+?>
+
 <{{ '?xml version="1.0" encoding="UTF-8"?' }}>
 <document>
     <align mode="center">
@@ -49,15 +53,24 @@
             ns()->currency->define( $order->discount )
         ]);?></text-line>
         
+
+        @if ( $order->tax_value > 0 )
+        <text-line><?php echo $printService->nexting([], '-');?></text-line>
+        <text-line><?php echo $printService->nexting([
+            __( 'Taxes' ),
+            ns()->currency->define( $order->tax_value )
+        ]);?></text-line>
+        @endif
+
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
 
         <text-line><?php echo $printService->nexting([
             __( 'Total' ),
             ns()->currency->define( $order->total )
         ]);?></text-line>
-        <text-line><?php echo $printService->nexting([], '-');?></text-line>
 
         @foreach( $order->payments as $payment )
+        <text-line><?php echo $printService->nexting([], '-');?></text-line>
         <text-line><?php echo $printService->nexting([
             $payments[ $payment->identifier ],
             ns()->currency->define( $payment->amount )
@@ -74,8 +87,8 @@
 
     </bold>
     <align mode="center">
-        <text-line size="2:2"><?php echo $printService->nexting([
-            __( 'Change' ),
+        <text-line size="1:2"><?php echo $printService->nexting([
+            $order->payment_status === Order::PAYMENT_PAID ? __( 'Change' ) : __( 'Due' ),
             ns()->currency->define( $order->total - $order->tendered )
         ]);?></text-line>
     </align>
