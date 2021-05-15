@@ -14,7 +14,7 @@ class nsPaPrint {
         nsHooks.addAction( 'ns-pos-pending-orders-refreshed', 'ns-pa.order-refreshed', ( orders ) => {
             setTimeout(() => {
                 $( '.buttons-container' ).prepend( 
-                    `<button class="print-button text-white bg-indigo-400 outline-none px-2 py-1"><i class="las la-print"></i> {{ __( 'Print' ) }}</button>`
+                    `<button class="print-button text-white bg-indigo-400 outline-none px-2 py-1"><i class="las la-print"></i> {{ __m( 'Print', 'NsPrintAdapter' ) }}</button>`
                 );
 
                 $( '.print-button' ).bind( 'click', function() {

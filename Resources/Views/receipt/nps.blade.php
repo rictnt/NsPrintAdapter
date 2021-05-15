@@ -26,7 +26,7 @@ use App\Models\Order;
     </align>
     <line-feed></line-feed>
     <text>
-        <text-line>{{ __( 'Products' ) }}</text-line>
+        <text-line>{{ __m( 'Products', 'NsPrintAdapter' ) }}</text-line>
         @foreach( $order->products as $product )
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
         <text-line>
@@ -44,12 +44,12 @@ use App\Models\Order;
     <bold>
         <text-line>
         <?php echo $printService->nexting([
-            __( 'Sub Total' ),
+            __m( 'Sub Total', 'NsPrintAdapter' ),
             ns()->currency->define( $order->total )
         ]);?></text-line>
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
         <text-line><?php echo $printService->nexting([
-            __( 'Discount' ),
+            __m( 'Discount', 'NsPrintAdapter' ),
             ns()->currency->define( $order->discount )
         ]);?></text-line>
         
@@ -57,7 +57,7 @@ use App\Models\Order;
         @if ( $order->tax_value > 0 )
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
         <text-line><?php echo $printService->nexting([
-            __( 'Taxes' ),
+            __m( 'Taxes', 'NsPrintAdapter' ),
             ns()->currency->define( $order->tax_value )
         ]);?></text-line>
         @endif
@@ -65,7 +65,7 @@ use App\Models\Order;
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
 
         <text-line><?php echo $printService->nexting([
-            __( 'Total' ),
+            __m( 'Total', 'NsPrintAdapter' ),
             ns()->currency->define( $order->total )
         ]);?></text-line>
 
@@ -80,7 +80,7 @@ use App\Models\Order;
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
 
         <text-line><?php echo $printService->nexting([
-            __( 'Tendered' ),
+            __m( 'Tendered', 'NsPrintAdapter' ),
             ns()->currency->define( $order->tendered )
         ]);?></text-line>
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
@@ -88,7 +88,7 @@ use App\Models\Order;
     </bold>
     <align mode="center">
         <text-line size="1:2"><?php echo $printService->nexting([
-            $order->payment_status === Order::PAYMENT_PAID ? __( 'Change' ) : __( 'Due' ),
+            $order->payment_status === Order::PAYMENT_PAID ? __m( 'Change', 'NsPrintAdapter' ) : __m( 'Due', 'NsPrintAdapter' ),
             ns()->currency->define( $order->total - $order->tendered )
         ]);?></text-line>
     </align>

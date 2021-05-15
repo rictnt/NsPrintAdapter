@@ -14,7 +14,7 @@ class ModuleServiceProvider extends ServiceProvider
         Hook::addFilter( 'ns-dashboard-menus', function( $menus ) {
             if ( isset( $menus[ 'settings' ] ) ) {
                 $menus[ 'settings' ][ 'childrens' ][ 'ns-adapter' ]    =   [
-                    'label'     =>      __( 'Ns Print Adapter' ),
+                    'label'     =>      __m( 'Ns Print Adapter', 'NsPrintAdapter' ),
                     'href'      =>      ns()->url( '/dashboard/print-adapter/settings' ),
                 ];
             }

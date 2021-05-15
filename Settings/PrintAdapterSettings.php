@@ -16,77 +16,77 @@ class PrintAdapterSettings extends SettingsPage
         $options            =   app()->make( Options::class );
 
         $this->labels       =    [
-            'title'         =>  __( 'Print Adapter Settings' ),
-            'description'   =>  __( 'Provides settings for print adapter.' ),
+            'title'         =>  __m( 'Print Adapter Settings', 'NsPrintAdapter' ),
+            'description'   =>  __m( 'Provides settings for print adapter.', 'NsPrintAdapter' ),
         ];
 
         $this->form         =   [
             'tabs'      =>  [
                 'general'   =>  [
-                    'label'     =>  __( 'General' ),
+                    'label'     =>  __m( 'General', 'NsPrintAdapter' ),
                     'fields'    =>  [
                         [
                             'type'          =>  'switch',
-                            'label'         =>  __( 'Print Enabled' ),
+                            'label'         =>  __m( 'Print Enabled', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_enabled' ),
-                            'description'   =>  __( 'Printer ' ),
+                            'description'   =>  __m( 'Printer ', 'NsPrintAdapter' ),
                             'options'       =>  Helper::kvToJsOptions([
-                                'yes'       =>  __( 'Yes' ),
-                                'no'        =>  __( 'No' ),
+                                'yes'       =>  __m( 'Yes', 'NsPrintAdapter' ),
+                                'no'        =>  __m( 'No', 'NsPrintAdapter' ),
                             ]),
                             'name'          =>  'ns_pa_enabled',
                         ],  [
                             'type'          =>  'select',
-                            'label'         =>  __( 'Logo Type' ),
+                            'label'         =>  __m( 'Logo Type', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_logotype' ),
-                            'description'   =>  __( 'Define what is the logo type.' ),
+                            'description'   =>  __m( 'Define what is the logo type.', 'NsPrintAdapter' ),
                             'options'       =>  Helper::kvToJsOptions([
-                                'image'     =>  __( 'Image (using shortcode)' ),
-                                'text'      =>  __( 'Use Store Name' ),
+                                'image'     =>  __m( 'Image (using shortcode)', 'NsPrintAdapter' ),
+                                'text'      =>  __m( 'Use Store Name', 'NsPrintAdapter' ),
                             ]),
                             'name'          =>  'ns_pa_logotype',
                         ], [
                             'type'          =>  'text',
-                            'label'         =>  __( 'Logo Shortcode' ),
+                            'label'         =>  __m( 'Logo Shortcode', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_logoshortcode' ),
-                            'description'   =>  __( 'If the Logo type is a shortcode, provide the shortcode here.' ),
+                            'description'   =>  __m( 'If the Logo type is a shortcode, provide the shortcode here.', 'NsPrintAdapter' ),
                             'name'          =>  'ns_pa_logoshortcode',
                         ], [
                             'type'          =>  'text',
-                            'label'         =>  __( 'NPS Address' ),
+                            'label'         =>  __m( 'NPS Address', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_server_address' ),
-                            'description'   =>  __( 'Provide the local Nexo Print Server 3.x address' ),
+                            'description'   =>  __m( 'Provide the local Nexo Print Server 3.x address', 'NsPrintAdapter' ),
                             'name'          =>  'ns_pa_server_address',
                         ], [
                             'type'          =>  'text',
-                            'label'         =>  __( 'Character Limit' ),
+                            'label'         =>  __m( 'Character Limit', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_characters_limit' ),
-                            'description'   =>  __( 'Define the maximum allowed characters. Default (48)' ),
+                            'description'   =>  __m( 'Define the maximum allowed characters. Default (48)', 'NsPrintAdapter' ),
                             'name'          =>  'ns_pa_characters_limit',
                         ], [
                             'type'          =>  'select',
-                            'label'         =>  __( 'Default Printer' ),
+                            'label'         =>  __m( 'Default Printer', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_printer' ),
-                            'description'   =>  __( 'Printer ' ),
+                            'description'   =>  __m( 'Printer ', 'NsPrintAdapter' ),
                             'options'       =>  [],
                             'name'          =>  'ns_pa_printer',
                         ], [
                             'type'          =>  'textarea',
-                            'label'         =>  __( 'Left Column' ),
+                            'label'         =>  __m( 'Left Column', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_left_column' ),
-                            'description'   =>  __( 'Define the header for the left column' ),
+                            'description'   =>  __m( 'Define the header for the left column', 'NsPrintAdapter' ),
                             'name'          =>  'ns_pa_left_column',
                         ], [
                             'type'          =>  'textarea',
-                            'label'         =>  __( 'Right Column' ),
+                            'label'         =>  __m( 'Right Column', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_right_column' ),
-                            'description'   =>  __( 'Define the header for the right column' ),
+                            'description'   =>  __m( 'Define the header for the right column', 'NsPrintAdapter' ),
                             'name'          =>  'ns_pa_right_column',
                         ], [
                             'type'          =>  'textarea',
-                            'label'         =>  __( 'Receipt Footer' ),
+                            'label'         =>  __m( 'Receipt Footer', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_receipt_footer' ),
-                            'description'   =>  __( 'This will always displays at the bottom of the receipt.' ),
+                            'description'   =>  __m( 'This will always displays at the bottom of the receipt.', 'NsPrintAdapter' ),
                             'name'          =>  'ns_pa_receipt_footer',
                         ],
                     ]

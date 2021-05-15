@@ -9,5 +9,5 @@ Route::middleware([
     SubstituteBindings::class,
     Authenticate::class
 ])->group( function() {
-    Route::get( '/print-adapter/settings', [ NsPrintAdapterController::class, 'getSettingsPage' ]);
+    Route::get( '/dashboard/print-adapter/settings', [ NsPrintAdapterController::class, 'getSettingsPage' ]);
 });
