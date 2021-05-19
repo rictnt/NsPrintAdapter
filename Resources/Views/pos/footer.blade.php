@@ -7,39 +7,48 @@ const nsPrintAdapterOptions     =   {
 
 class nsPaPrint {
     constructor() {
-        nsHooks.addAction( 'ns-order-submit-successful', 'ns-pa.catch-order', ( result ) => {
-            this.print( result.data.order.id );
+
+        /**
+         * Will handle print job if
+         * the print gateway is nps_legacy
+         */
+        nsHooks.addFilter( 'ns-order-custom-print', 'ns-pa.catch-printing', ({ order_id, gateway, printed }) => {
+            if ( gateway === 'nps_legacy' ) {
+                this.print( order_id );
+                printed     =   true;  
+            }
+
+            return { order_id, gateway, printed };
         });
-
-        nsHooks.addAction( 'ns-pos-pending-orders-refreshed', 'ns-pa.order-refreshed', ( orders ) => {
-            setTimeout(() => {
-                $( '.buttons-container' ).prepend( 
-                    `<button class="print-button text-white bg-indigo-400 outline-none px-2 py-1"><i class="las la-print"></i> {{ __m( 'Print', 'NsPrintAdapter' ) }}</button>`
-                );
-
-                $( '.print-button' ).bind( 'click', function() {
-                    const orderID   =   $(this).closest( '[data-order-id]' ).data( 'order-id' );
-                    nsPaPrintObject.print( orderID );
-                });
-            }, 100 );
-        })
     }
     
     print( order_id ) {
-        nsHttpClient.get( `/api/nexopos/v4/ns-print-adapter/receipt/${order_id}` )
-            .subscribe( result => {
+        const registerId    =   POS.get( 'register' ) ? POS.get( 'register' ).id : null;
+        nsHttpClient.get( `/api/nexopos/v4/ns-printadapter/${order_id}/print-data?cash-register=${registerId}` )
+            .subscribe( (result ) => {
                 const { printer, content, address }  =   result;
 
-                $.ajax( `${address}/api/print`, {
-                    data        :   { printer, content },
-                    type        :   'POST',
-                    dataType 	:   'json',
-                    success     :   ( result ) => {
-                        nsSnackBar.success( 'The print job has been submitted.' )
-                            .subscribe();
-                    }
+                const data  =   new FormData;
+
+                data.set( 'printer', printer );
+                data.set( 'content', content );
+                
+                const oReq = new XMLHttpRequest();
+
+                oReq.addEventListener( "load", ( e ) => {
+                    nsSnackBar.success( 'The print job has been submitted.' )
+                        .subscribe();
                 });
-            })  
+                oReq.addEventListener( 'error', () => {
+                    return nsSnackBar.error( __( 'An unexpected error has occured while printing.' ) ).subscribe();
+                });
+                oReq.open( "POST",  `${address}/api/print` );
+                oReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                oReq.send(JSON.stringify({ printer, content }));
+
+            }, ( error ) => {
+                nsSnackBar.error( error.message || __( 'An unexpected error has occured while retreiving the receipt.' ) ).subscribe();
+            });
     }
 }
 

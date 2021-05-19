@@ -3,13 +3,40 @@ namespace Modules\NsPrintAdapter\Services;
 
 use Illuminate\Support\Facades\View;
 use App\Models\Order;
+use App\Models\Register;
 use App\Services\Options;
 
 class PrintService
 {
     public function getOrderReceipt( Order $order )
     {
-        $options        =   app()->make( Options::class );
+        $printerName        =   ns()->option->get( 'ns_pa_printer' );
+        $printerAddress     =   ns()->option->get( 'ns_pa_server_address' );
+        $registerId         =   request()->query( 'cash-register' );
+
+        if ( ! empty( $registerId ) ) {
+            $cashRegister   =   Register::find( $registerId );
+
+            if ( ! $cashRegister instanceof Register ) {
+                throw new NotFoundException( __( 'Unable to find the requested cash register.' ) );
+            }
+
+            $printerName    =   $cashRegister->printer_name;
+            $printerAddress =   $cashRegister->printer_address;
+        }
+
+        /**
+         * @var Options;
+         */
+        $options            =   app()->make( Options::class );
+
+        if ( empty( $printerName ) || empty( $printerAddress ) ) {
+            if ( empty( $printerId ) ) {
+                throw new NotAllowedException( __( 'Unable to retreive the receipt if no printer name and address is defined.' ) );
+            } else {
+                throw new NotAllowedException( __( 'Unable to retreive the receipt if no printer name and address is defined for the opened cash register.' ) );
+            }
+        }
 
         return [
             'content'       =>  ( string ) View::make( 'NsPrintAdapter::receipt.nps', [
@@ -19,8 +46,8 @@ class PrintService
                     ->mapWithKeys( fn( $payment ) => [ $payment[ 'identifier' ] => $payment[ 'label' ] ])
                     ->toArray(),
             ]),
-            'printer'       =>  ns()->option->get( 'ns_pa_printer' ),
-            'address'       =>  ns()->option->get( 'ns_pa_server_address' ),
+            'printer'       =>  $printerName,
+            'address'       =>  $printerAddress,
         ];
     }
 
