@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\View;
 use App\Models\Order;
 use App\Models\Register;
 use App\Services\Options;
+use App\Exceptions\NotFoundException;
+use App\Exceptions\NotAllowedException;
 
 class PrintService
 {
@@ -14,7 +16,7 @@ class PrintService
         $printerAddress     =   ns()->option->get( 'ns_pa_server_address' );
         $registerId         =   request()->query( 'cash-register' );
 
-        if ( ! empty( $registerId ) ) {
+        if ( ! empty( $registerId ) && $registerId !== 'null' ) {
             $cashRegister   =   Register::find( $registerId );
 
             if ( ! $cashRegister instanceof Register ) {

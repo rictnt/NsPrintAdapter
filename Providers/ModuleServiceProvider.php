@@ -53,7 +53,13 @@ class ModuleServiceProvider extends ServiceProvider
         Hook::addFilter( 'ns-printing-settings-fields', function( $fields ) {
             foreach( $fields as &$field ) {
                 if ( $field[ 'name' ] === 'ns_pos_printing_gateway' ) {
-                    $field[ 'options' ][ 'nps_legacy' ]     =   __( 'Nexo Print Server (2x)' );
+                    $field[ 'options' ]     =   [
+                        ...$field[ 'options' ],
+                        [
+                            'value' =>  'nps_legacy',
+                            'label' =>  __( 'Nexo Print Server (2x)' )
+                        ]
+                    ];
                 }
             }
 
