@@ -1,5 +1,9 @@
 <?php
 use App\Models\Order;
+use App\Classes\Hook;
+use App\Services\OrdersService;
+
+$orderService   =   app()->make( OrdersService::class );
 ?>
 
 <{{ '?xml version="1.0" encoding="UTF-8"?' }}>
@@ -18,8 +22,8 @@ use App\Models\Order;
     <line-feed></line-feed>
     <align mode="left">
         <?php foreach( $printService->buildingLines( 
-            ns()->option->get( 'ns_pa_left_column', '' ),
-            ns()->option->get( 'ns_pa_right_column', '' ),
+            $orderService->orderTemplateMapping( 'ns_pa_left_column', $order ),
+            $orderService->orderTemplateMapping( 'ns_pa_right_column', $order ),
         ) as $line ):?>
         <text-line><?php echo $printService->nexting( $line );?></text-line>
         <?php endforeach;?>
@@ -35,6 +39,7 @@ use App\Models\Order;
             ns()->currency->define( $product->total_price )
         ]);
         ?></text-line>
+        <?php echo Hook::filter( 'ns-pa-receipt-after-product', '', $product );?>
         @endforeach
     </text>
     <line-feed></line-feed>
@@ -47,11 +52,14 @@ use App\Models\Order;
             __m( 'Sub Total', 'NsPrintAdapter' ),
             ns()->currency->define( $order->total )
         ]);?></text-line>
-        <text-line><?php echo $printService->nexting([], '-');?></text-line>
+
+        @if ( $order->discount > 0 )
+        <text-line><?php echo $printService->nexting([], '-');?></text-line>        
         <text-line><?php echo $printService->nexting([
             __m( 'Discount', 'NsPrintAdapter' ),
             ns()->currency->define( $order->discount )
         ]);?></text-line>
+        @endif
         
 
         @if ( $order->tax_value > 0 )
@@ -69,21 +77,25 @@ use App\Models\Order;
             ns()->currency->define( $order->total )
         ]);?></text-line>
 
-        @foreach( $order->payments as $payment )
-        <text-line><?php echo $printService->nexting([], '-');?></text-line>
-        <text-line><?php echo $printService->nexting([
-            $payments[ $payment->identifier ],
-            ns()->currency->define( $payment->amount )
-        ]);?></text-line>
-        @endforeach        
+        @if ( ns()->option->get( 'ns_pa_payment_summary', 'yes' ) === 'yes' )
+            @foreach( $order->payments as $payment )
+            <text-line><?php echo $printService->nexting([], '-');?></text-line>
+            <text-line><?php echo $printService->nexting([
+                $payments[ $payment->identifier ],
+                ns()->currency->define( $payment->value )
+            ]);?></text-line>
+            @endforeach        
+        @endif
         
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
 
+        @if ( $order->tendered > 0 )
         <text-line><?php echo $printService->nexting([
             __m( 'Tendered', 'NsPrintAdapter' ),
             ns()->currency->define( $order->tendered )
         ]);?></text-line>
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
+        @endif
 
     </bold>
     <align mode="center">

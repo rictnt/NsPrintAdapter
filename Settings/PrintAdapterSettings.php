@@ -29,12 +29,22 @@ class PrintAdapterSettings extends SettingsPage
                             'type'          =>  'switch',
                             'label'         =>  __m( 'Print Enabled', 'NsPrintAdapter' ),
                             'value'         =>  $options->get( 'ns_pa_enabled' ),
-                            'description'   =>  __m( 'Printer ', 'NsPrintAdapter' ),
+                            'description'   =>  __m( 'Wether or not the printing should be enabled. ', 'NsPrintAdapter' ),
                             'options'       =>  Helper::kvToJsOptions([
                                 'yes'       =>  __m( 'Yes', 'NsPrintAdapter' ),
                                 'no'        =>  __m( 'No', 'NsPrintAdapter' ),
                             ]),
                             'name'          =>  'ns_pa_enabled',
+                        ],  [
+                            'type'          =>  'switch',
+                            'label'         =>  __m( 'Display Payment Summary', 'NsPrintAdapter' ),
+                            'value'         =>  $options->get( 'ns_pa_payment_summary' ),
+                            'description'   =>  __m( 'If enabled, will display the differnt type of payment used on the payment receipt.', 'NsPrintAdapter' ),
+                            'options'       =>  Helper::kvToJsOptions([
+                                'yes'       =>  __m( 'Yes', 'NsPrintAdapter' ),
+                                'no'        =>  __m( 'No', 'NsPrintAdapter' ),
+                            ]),
+                            'name'          =>  'ns_pa_payment_summary',
                         ],  [
                             'type'          =>  'select',
                             'label'         =>  __m( 'Logo Type', 'NsPrintAdapter' ),
