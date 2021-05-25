@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <module>
     <namespace>NsPrintAdapter</namespace>
-    <version>4.2.4</version>
+    <version>4.2.5</version>
     <author>Blair Jersyer</author>
     <name>NPS Adapter</name>
     <description>This module ensure the compatibility with Nexo Print Server 3.x.</description>
