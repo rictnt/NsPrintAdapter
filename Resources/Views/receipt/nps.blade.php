@@ -31,7 +31,7 @@ $orderService   =   app()->make( OrdersService::class );
     <line-feed></line-feed>
     <text>
         <text-line>{{ __m( 'Products', 'NsPrintAdapter' ) }}</text-line>
-        @foreach( $order->products as $product )
+        @foreach( Hook::filter( 'ns-receipt-products', $order->products ) as $product )
         <text-line><?php echo $printService->nexting([], '-');?></text-line>
         <text-line>
         <?php echo $printService->nexting([
