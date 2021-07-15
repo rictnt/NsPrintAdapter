@@ -31,16 +31,78 @@ $orderService   =   app()->make( OrdersService::class );
     <line-feed></line-feed>
     <text>
         <text-line>{{ __m( 'Products', 'NsPrintAdapter' ) }}</text-line>
-        @foreach( Hook::filter( 'ns-receipt-products', $order->products ) as $product )
-        <text-line><?php echo $printService->nexting([], '-');?></text-line>
-        <text-line>
-        <?php echo $printService->nexting([
-            $product->name . ' (x' . $product->quantity . ')',
-            ns()->currency->define( $product->total_price )
-        ]);
-        ?></text-line>
-        <?php echo Hook::filter( 'ns-pa-receipt-after-product', '', $product );?>
-        @endforeach
+
+        <?php
+        $products   =   Hook::filter( 'ns-receipt-products', $order->products->filter( fn( $product ) => $product->plate === 'plate_1' ) );
+        ?>
+        @if ( $products->count() > 0 ) 
+            <text-line><?php echo $printService->nexting([], '-');?></text-line>
+            <text-line>{{ __m( 'First', 'NsPrintAdapter' ) }}</text-line>
+            @foreach( $products as $product )
+            <text-line>
+            <?php echo $printService->nexting([
+                $product->name . ' (x' . $product->quantity . ')',
+                ns()->currency->define( $product->total_price )
+            ]);
+            ?></text-line>
+            <?php echo Hook::filter( 'ns-pa-receipt-after-product', '', $product );?>
+            @endforeach
+        @endif
+
+        <?php
+        $products = Hook::filter( 'ns-receipt-products', $order->products->filter( fn( $product ) => $product->plate === 'plate_2' ) );
+        ?>
+
+        @if ( $products->count() > 0 ) 
+            <text-line><?php echo $printService->nexting([], '-');?></text-line>
+            <text-line>{{ __m( 'Second', 'NsPrintAdapter' ) }}</text-line>
+            @foreach( $products as $product )
+            <text-line>
+            <?php echo $printService->nexting([
+                $product->name . ' (x' . $product->quantity . ')',
+                ns()->currency->define( $product->total_price )
+            ]);
+            ?></text-line>
+            <?php echo Hook::filter( 'ns-pa-receipt-after-product', '', $product );?>
+            @endforeach
+        @endif
+
+        <?php
+        $products   =   Hook::filter( 'ns-receipt-products', $order->products->filter( fn( $product ) => $product->plate === 'plate_3' ) );
+        ?>
+        @if ( $products->count() > 0 )
+            <text-line><?php echo $printService->nexting([], '-');?></text-line>
+            <text-line>{{ __m( 'Third', 'NsPrintAdapter' ) }}</text-line>
+            @foreach( $products as $product )
+            <text-line>
+            <?php echo $printService->nexting([
+                $product->name . ' (x' . $product->quantity . ')',
+                ns()->currency->define( $product->total_price )
+            ]);
+            ?></text-line>
+            <?php echo Hook::filter( 'ns-pa-receipt-after-product', '', $product );?>
+            @endforeach
+        @endif
+
+        <?php
+        $products   =   Hook::filter( 
+            'ns-receipt-products', 
+            $order->products->filter( fn( $product ) => empty( $product->plate ) ) 
+        );
+        ?>
+
+        @if ( $products->count() > 0 )
+            @foreach( $products as $product )
+            <text-line><?php echo $printService->nexting([], '-');?></text-line>
+            <text-line>
+            <?php echo $printService->nexting([
+                $product->name . ' (x' . $product->quantity . ')',
+                ns()->currency->define( $product->total_price )
+            ]);
+            ?></text-line>
+            <?php echo Hook::filter( 'ns-pa-receipt-after-product', '', $product );?>
+            @endforeach
+        @endif
     </text>
     <line-feed></line-feed>
     <text>
