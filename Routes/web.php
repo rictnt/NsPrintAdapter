@@ -10,6 +10,6 @@ Route::prefix( 'dashboard' )->group( function() {
         SubstituteBindings::class,
         Authenticate::class
     ])->group( function() {
-        Route::get( '/print-adapter/settings', [ NsPrintAdapterController::class, 'getSettingsPage' ]);
+        include_once( dirname( __FILE__ ) . '/multistore.php' );
     });
 });

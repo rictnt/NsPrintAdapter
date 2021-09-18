@@ -8,6 +8,9 @@ use Modules\NsPrintAdapter\Events\NsPrintAdapterEvent;
 use Modules\NsPrintAdapter\Services\PrintService;
 use Illuminate\Support\ServiceProvider;
 use App\Crud\RegisterCrud;
+use App\Services\ModulesService;
+use Illuminate\Support\Facades\Event;
+use Modules\NsMultiStore\Events\MultiStoreWebRoutesLoadedEvent;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -36,6 +39,9 @@ class ModuleServiceProvider extends ServiceProvider
             }
             return $class;
         }, 10, 2 );
+
+        Event::listen( MultiStoreApiRoutesLoadedEvent::class, fn() => ModulesService::loadModuleFile( 'NsPrintAdapter', 'Routes/api' ) );
+        Event::listen( MultiStoreWebRoutesLoadedEvent::class, fn() => ModulesService::loadModuleFile( 'NsPrintAdapter', 'Routes/multistore' ) );
 
         /**
          * This will filter the POS options
